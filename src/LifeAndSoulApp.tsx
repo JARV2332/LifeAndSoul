@@ -46,7 +46,7 @@ import {
   findProgram,
 } from './lib/programs';
 
-type View = 'landing' | 'dashboard' | 'coach' | 'kitchen' | 'physio' | 'professor';
+type View = 'landing' | 'about' | 'dashboard' | 'coach' | 'kitchen' | 'physio' | 'professor';
 type LandingSub = 'hero' | 'checkout';
 
 interface ChatMessage {
@@ -452,6 +452,7 @@ export default function LifeAndSoulApp() {
 
   const navItems: { id: View; label: string; icon: ReactNode; locked?: boolean }[] = [
     { id: 'landing', label: 'Inicio & Checkout', icon: <Home size={18} /> },
+    { id: 'about', label: 'Conócenos', icon: <User size={18} /> },
     { id: 'professor', label: 'Panel Profe', icon: <ClipboardList size={18} /> },
     { id: 'dashboard', label: 'Panel Atleta', icon: <LayoutDashboard size={18} />, locked: !isSubscribed },
     { id: 'coach', label: 'Coach Ángel', icon: <MessageCircle size={18} />, locked: !isSubscribed },
@@ -528,7 +529,216 @@ export default function LifeAndSoulApp() {
     },
   ];
 
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const TEAM_PHOTOS = Array.from({ length: 13 }, (_, i) => `/team/angel-${i + 1}.png`);
+
+  const nextSlide = () => setCarouselIndex((prev) => (prev + 1) % TEAM_PHOTOS.length);
+  const prevSlide = () => setCarouselIndex((prev) => (prev - 1 + TEAM_PHOTOS.length) % TEAM_PHOTOS.length);
+
   /* ─── VIEWS ─── */
+
+  const AboutView = () => (
+    <div className="max-w-6xl mx-auto px-4 py-8 space-y-10">
+      {/* Hero Banner */}
+      <div className="relative overflow-hidden rounded-xl border border-zinc-800 bg-[#161618]">
+        <div className="ls-glow -right-20 -top-20 h-64 w-64 bg-[#A3E635]/8" />
+        <div className="relative z-10 flex flex-col items-center gap-8 p-8 md:flex-row md:p-12">
+          <div className="shrink-0">
+            <img
+              src="/team/angel-10.png"
+              alt="Coach Ángel Campos"
+              className="h-48 w-48 rounded-full border-4 border-[#A3E635]/40 object-cover shadow-2xl shadow-[#A3E635]/20 md:h-56 md:w-56"
+            />
+          </div>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#A3E635] mb-2">Fundador & Director</p>
+            <h1 className="font-black tracking-tighter uppercase text-white text-3xl md:text-4xl">
+              Ángel Campos
+            </h1>
+            <p className="mt-2 text-sm text-gray-400">
+              Entrenador de Atletismo · Functional Training · 40 años · 22 años dedicados al deporte
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="rounded-full bg-[#A3E635]/15 px-3 py-1 text-[10px] font-bold uppercase text-[#A3E635]">Campeón Centroamericano</span>
+              <span className="rounded-full bg-[#A3E635]/15 px-3 py-1 text-[10px] font-bold uppercase text-[#A3E635]">Ex Velocista Nacional</span>
+              <span className="rounded-full bg-[#A3E635]/15 px-3 py-1 text-[10px] font-bold uppercase text-[#A3E635]">Preparador Físico</span>
+            </div>
+            <div className="mt-4 flex items-center gap-4 text-xs text-gray-400">
+              <span>📞 (502) 3405 2488</span>
+              <span>✉️ angelifeandsoul@gmail.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Photo Carousel */}
+      <div className="bg-[#161618] border border-zinc-800 rounded-xl p-6">
+        <h2 className="font-black uppercase tracking-tighter text-white text-sm mb-4 flex items-center gap-2">
+          <Flame size={16} className="text-[#A3E635]" /> Galería del Coach
+        </h2>
+        <div className="relative">
+          <div className="overflow-hidden rounded-lg aspect-[16/9] bg-[#0B0B0C]">
+            <img
+              src={TEAM_PHOTOS[carouselIndex]}
+              alt={`Coach Ángel - Foto ${carouselIndex + 1}`}
+              className="h-full w-full object-contain"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={prevSlide}
+            className="absolute left-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white hover:bg-[#A3E635] hover:text-black transition"
+          >
+            <ChevronRight size={18} className="rotate-180" />
+          </button>
+          <button
+            type="button"
+            onClick={nextSlide}
+            className="absolute right-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white hover:bg-[#A3E635] hover:text-black transition"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
+        {/* Thumbnail strip */}
+        <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+          {TEAM_PHOTOS.map((src, i) => (
+            <button
+              key={src}
+              type="button"
+              onClick={() => setCarouselIndex(i)}
+              className={cn(
+                'flex-shrink-0 w-14 h-14 rounded-lg overflow-hidden border-2 transition-all',
+                carouselIndex === i ? 'border-[#A3E635] scale-105' : 'border-zinc-800 opacity-60 hover:opacity-100'
+              )}
+            >
+              <img src={src} alt="" className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Story */}
+      <div className="bg-[#161618] border border-zinc-800 rounded-xl p-6">
+        <h2 className="font-black uppercase tracking-tighter text-white text-sm mb-4 flex items-center gap-2">
+          <BookOpen size={16} className="text-[#A3E635]" /> Mi Historia
+        </h2>
+        <div className="space-y-4 text-sm leading-relaxed text-gray-300">
+          <p>
+            Mi historia no empezó con una victoria, sino con una necesidad urgente de cambio. Hace más de 22 años, me miré al espejo y no vi a un atleta; vi a un joven con sobrepeso y problemas de salud que sabía que debía tomar una decisión. Lo que empezó como una lucha personal por sanar, terminó convirtiéndose en mi misión de vida.
+          </p>
+          <p>
+            A los 18 años, en 2004, dejé de entrenar solo para mí. Empecé a compartir lo que aprendía, ayudando a fundar los primeros clubes de atletismo en Guatemala, como Corredores por la Paz y Street Running. En el gimnasio, en las pistas, y como velocista, entendí que el cuerpo es la herramienta más poderosa que tenemos para transformar nuestro destino.
+          </p>
+          <p>
+            Pasé por el culturismo, el fútbol, el CrossFit y el entrenamiento funcional. Cada caída me enseñó algo nuevo y cada disciplina me dio una pieza del rompecabezas que, en 2014, se convirtió en <span className="text-[#A3E635] font-bold">Life and Soul</span>.
+          </p>
+          <p>
+            No quería abrir solo un gimnasio. Quería crear un espacio donde forjáramos carácter y propósito. Diseñé un método que fusiona la alta intensidad con la técnica pura del atletismo, porque creo que todos — seas un bombero, un futbolista de élite o alguien que nunca ha corrido — merecemos ser la versión más fuerte y capaz de nosotros mismos.
+          </p>
+          <p className="text-white font-semibold italic border-l-4 border-[#A3E635] pl-4">
+            "Mientras alguien esté dispuesto a levantarse, a correr más fuerte y a creer en sí mismo… nosotros estaremos ahí para impulsarlo."
+          </p>
+        </div>
+      </div>
+
+      {/* Credentials Grid */}
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+        {/* Experience */}
+        <div className="bg-[#161618] border border-zinc-800 rounded-xl p-6">
+          <h2 className="font-black uppercase tracking-tighter text-white text-sm mb-4 flex items-center gap-2">
+            <Activity size={16} className="text-[#A3E635]" /> Experiencia Laboral
+          </h2>
+          <div className="space-y-4">
+            <div className="border-l-2 border-[#A3E635] pl-4">
+              <p className="text-xs font-black text-white">Centro de Entrenamiento Life & Soul</p>
+              <p className="text-[10px] text-[#A3E635] font-bold">2015 — Presente · Director</p>
+            </div>
+            <div className="border-l-2 border-zinc-700 pl-4">
+              <p className="text-xs font-black text-white">Colegio Americano de Guatemala</p>
+              <p className="text-[10px] text-gray-400">2019 – 2022 · Coach de Atletismo</p>
+            </div>
+            <div className="border-l-2 border-zinc-700 pl-4">
+              <p className="text-xs font-black text-white">Instituto Guatemalteco Israelí</p>
+              <p className="text-[10px] text-gray-400">2015 – 2020 · Profesor de Educación Física</p>
+            </div>
+            <div className="border-l-2 border-zinc-700 pl-4">
+              <p className="text-xs font-black text-white">Banco Industrial</p>
+              <p className="text-[10px] text-gray-400">2011 – 2015 · Analista de Riesgos</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Formation */}
+        <div className="bg-[#161618] border border-zinc-800 rounded-xl p-6">
+          <h2 className="font-black uppercase tracking-tighter text-white text-sm mb-4 flex items-center gap-2">
+            <BookOpen size={16} className="text-[#A3E635]" /> Formación
+          </h2>
+          <div className="space-y-3 text-xs text-gray-300">
+            <div className="bg-[#0B0B0C] border border-zinc-800 rounded-lg p-3">
+              <p className="font-bold text-white">Fuerza aplicada al deporte, biomecánica y pliometría</p>
+              <p className="text-[10px] text-gray-500">2019 · CDAG & Comité Olímpico Guatemalteco</p>
+            </div>
+            <div className="bg-[#0B0B0C] border border-zinc-800 rounded-lg p-3">
+              <p className="font-bold text-white">Acondicionamiento y planificación deportiva</p>
+              <p className="text-[10px] text-gray-500">2020 · Dr. David García López (ESP) · Sport Science</p>
+            </div>
+            <div className="bg-[#0B0B0C] border border-zinc-800 rounded-lg p-3">
+              <p className="font-bold text-white">Taller de Atletismo — USAC</p>
+              <p className="text-[10px] text-gray-500">2015 · Programa de Cursos Libres</p>
+            </div>
+            <div className="bg-[#0B0B0C] border border-zinc-800 rounded-lg p-3">
+              <p className="font-bold text-white">Nutrición Deportiva</p>
+              <p className="text-[10px] text-gray-500">2015 · Club Atlético "Guayo" · Lic. Mynor Montúfar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Achievements */}
+      <div className="bg-[#161618] border border-zinc-800 rounded-xl p-6">
+        <h2 className="font-black uppercase tracking-tighter text-white text-sm mb-4 flex items-center gap-2">
+          <Target size={16} className="text-[#A3E635]" /> Palmarés Competitivo
+        </h2>
+        <div className="mb-4">
+          <img src="/team/medals.png" alt="Medallas Coach Ángel" className="w-full max-w-md rounded-lg border border-zinc-800" />
+        </div>
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
+          <div className="rounded-lg bg-[#0B0B0C] border border-[#A3E635]/30 p-4">
+            <p className="text-[10px] font-bold uppercase text-[#A3E635]">2019 · Centroamericano Máster</p>
+            <p className="text-xs text-white font-bold mt-1">🥇 Oro — Relevos 4×100m</p>
+            <p className="text-xs text-gray-300">🥈 Plata — Relevos 4×400m</p>
+            <p className="text-xs text-gray-300">🥉 Bronce — 200m y 400m planos</p>
+          </div>
+          <div className="rounded-lg bg-[#0B0B0C] border border-zinc-800 p-4">
+            <p className="text-[10px] font-bold uppercase text-gray-400">2021 · Nacional Mayor</p>
+            <p className="text-xs text-white font-bold mt-1">🥇 Oro — 200m y 400m (M35)</p>
+            <p className="text-xs text-gray-300">🥈 Plata — 100m planos</p>
+            <p className="text-xs text-gray-300">🥉 Bronce — Relevos 4×100m</p>
+          </div>
+          <div className="rounded-lg bg-[#0B0B0C] border border-zinc-800 p-4">
+            <p className="text-[10px] font-bold uppercase text-gray-400">2019 · Nacional Máster (M30)</p>
+            <p className="text-xs text-white font-bold mt-1">🥇 4 Oros — 4×100, 4×400, 200m, 400m</p>
+            <p className="text-xs text-gray-300">🥈 Plata — 100m planos</p>
+          </div>
+          <div className="rounded-lg bg-[#0B0B0C] border border-zinc-800 p-4">
+            <p className="text-[10px] font-bold uppercase text-gray-400">2016-2017 · Desafío Lava Trail</p>
+            <p className="text-xs text-white font-bold mt-1">🥈 2do Lugar — 10km Volcán Pacaya (2016)</p>
+            <p className="text-xs text-gray-300">🥉 3er Lugar — 10km Volcán Pacaya (2017)</p>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="text-center bg-[#161618] border border-zinc-800 rounded-xl p-8">
+        <h2 className="font-black tracking-tighter uppercase text-white text-xl mb-2">¿Listo para transformar tu vida?</h2>
+        <p className="text-sm text-gray-400 mb-6">Únete al equipo Life & Soul y entrena con los mejores</p>
+        <button type="button" onClick={() => { setView('landing'); setLandingSub('checkout'); }} className="ls-btn-primary">
+          UNIRME AL TEAM
+          <ChevronRight size={18} />
+        </button>
+      </div>
+    </div>
+  );
 
   const LandingView = () => (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -1281,7 +1491,7 @@ export default function LifeAndSoulApp() {
   );
 
   const renderView = () => {
-    if (!isSubscribed && view !== 'landing' && view !== 'professor') {
+    if (!isSubscribed && view !== 'landing' && view !== 'about' && view !== 'professor') {
       return (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <Lock className="mb-4 text-gray-600" size={48} />
@@ -1294,6 +1504,7 @@ export default function LifeAndSoulApp() {
     }
     switch (view) {
       case 'landing': return LandingView();
+      case 'about': return AboutView();
       case 'dashboard': return DashboardView();
       case 'coach': return CoachView();
       case 'kitchen': return KitchenView();
