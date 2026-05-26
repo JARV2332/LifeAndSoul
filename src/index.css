@@ -4,12 +4,12 @@
 @source '../index.html';
 
 @theme {
-  --color-obsidian: #000000;
-  --color-charcoal: #0a0a0a;
-  --color-elevated: #111111;
-  --color-surface: #1a1a1a;
-  --color-accent: #a4ff00;
-  --color-accent-light: #ccff00;
+  --color-obsidian: #0B0B0C;
+  --color-charcoal: #161618;
+  --color-elevated: #1F1F22;
+  --color-surface: #242427;
+  --color-accent: #A3E635;
+  --color-accent-light: #bef264;
   --color-muted: #9ca3af;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
@@ -30,23 +30,23 @@ body {
 
 @layer components {
   .ls-card {
-    @apply rounded-2xl border border-white/[0.08] bg-charcoal shadow-xl shadow-black/40;
+    @apply rounded-xl border border-[#1F1F22] bg-[#161618] shadow-xl shadow-black/40 hover:border-[#333] transition-all duration-300;
   }
 
   .ls-card-hover {
-    @apply transition-all duration-300 hover:border-accent/50 hover:shadow-accent/15 hover:-translate-y-0.5;
+    @apply hover:border-[#A3E635]/50 hover:shadow-[#A3E635]/10 hover:-translate-y-0.5;
   }
 
   .ls-btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-light px-8 py-4 text-sm font-black uppercase tracking-widest text-black shadow-lg shadow-accent/40 transition-all duration-200 hover:scale-[1.02] hover:shadow-accent/60 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 bg-[#A3E635] text-black font-extrabold uppercase tracking-wider py-3 px-6 rounded-lg hover:bg-[#bef264] active:scale-95 transition-all duration-200 shadow-lg shadow-[#A3E635]/30;
   }
 
   .ls-btn-ghost {
-    @apply inline-flex items-center gap-2 rounded-xl border border-white/10 px-5 py-2.5 text-sm font-semibold text-muted transition hover:border-accent/50 hover:text-accent;
+    @apply inline-flex items-center gap-2 rounded-lg bg-[#242427] px-5 py-2.5 text-sm font-semibold text-gray-300 transition hover:bg-[#2c2c30] hover:text-white;
   }
 
   .ls-input {
-    @apply w-full rounded-xl border border-white/10 bg-obsidian px-4 py-3 text-white placeholder-gray-600 transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40;
+    @apply w-full rounded-lg bg-[#0B0B0C] text-white border border-[#242427] px-4 py-3 placeholder-gray-600 transition focus:border-[#A3E635] focus:outline-none focus:ring-2 focus:ring-[#A3E635]/30;
   }
 
   .ls-label {
@@ -54,7 +54,7 @@ body {
   }
 
   .ls-section-title {
-    @apply text-sm font-black uppercase tracking-[0.2em] text-accent;
+    @apply text-sm font-black uppercase tracking-[0.2em] text-[#A3E635];
   }
 
   .ls-glow {
@@ -62,7 +62,7 @@ body {
   }
 
   .ls-logo {
-    @apply h-auto w-auto max-w-full object-contain drop-shadow-[0_0_20px_rgba(164,255,0,0.45)];
+    @apply h-auto w-auto max-w-full object-contain drop-shadow-[0_0_20px_rgba(163,230,53,0.45)];
   }
 
   .ls-calendar-popover {

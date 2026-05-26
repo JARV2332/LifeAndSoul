@@ -134,22 +134,22 @@ export function DatePicker({ value, onChange, placeholder = 'Selecciona una fech
   const calendarPopover = open ? (
     <>
       <div
-        className="ls-calendar-backdrop fixed inset-0 z-[9998] bg-black/50 backdrop-blur-[2px]"
+        className="ls-calendar-backdrop fixed inset-0 z-[9998] bg-black/60 backdrop-blur-[2px]"
         aria-hidden
       />
       <div
         ref={popoverRef}
-        className="ls-calendar-popover fixed z-[9999] overflow-hidden rounded-2xl border border-accent/25 bg-charcoal shadow-[0_24px_80px_rgba(0,0,0,0.85),0_0_40px_rgba(164,255,0,0.08)]"
+        className="ls-calendar-popover fixed z-[9999] overflow-hidden rounded-xl border border-[#A3E635]/20 bg-[#161618] shadow-[0_24px_80px_rgba(0,0,0,0.9),0_0_40px_rgba(163,230,53,0.06)]"
         style={{ top: pos.top, left: pos.left, width: pos.width }}
         role="dialog"
         aria-modal="true"
         aria-label="Calendario"
       >
-        <div className="relative border-b border-white/[0.06] bg-gradient-to-r from-accent/15 via-charcoal to-charcoal px-5 py-4">
-          <div className="ls-glow -right-10 -top-10 h-32 w-32 bg-accent/20" />
+        <div className="relative border-b border-[#1F1F22] bg-[#161618] px-5 py-4">
+          <div className="ls-glow -right-10 -top-10 h-32 w-32 bg-[#A3E635]/10" />
           <div className="relative flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-accent">
+              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#A3E635]">
                 Seleccionar fecha
               </p>
               <p className="mt-0.5 text-lg font-black text-white">
@@ -159,7 +159,7 @@ export function DatePicker({ value, onChange, placeholder = 'Selecciona una fech
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="rounded-xl border border-white/10 p-2 text-gray-400 transition hover:border-accent/40 hover:text-white"
+              className="rounded-lg border border-[#242427] p-2 text-gray-400 transition hover:border-[#A3E635]/40 hover:text-white"
             >
               <X size={18} />
             </button>
@@ -168,19 +168,19 @@ export function DatePicker({ value, onChange, placeholder = 'Selecciona una fech
             <button
               type="button"
               onClick={() => setViewDate(new Date(year, month - 1, 1))}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-obsidian text-gray-300 transition hover:border-accent/50 hover:bg-accent/10 hover:text-accent"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#242427] bg-[#0B0B0C] text-gray-300 transition hover:border-[#A3E635]/50 hover:bg-[#A3E635]/10 hover:text-[#A3E635]"
             >
               <ChevronLeft size={20} />
             </button>
             <div className="flex-1 text-center">
-              <span className="inline-block rounded-full bg-accent/20 px-4 py-1 text-xs font-bold uppercase tracking-wider text-accent">
+              <span className="inline-block rounded-full bg-[#A3E635]/15 px-4 py-1 text-xs font-bold uppercase tracking-wider text-[#A3E635]">
                 {WEEKDAYS[new Date(year, month, 1).getDay()]} — {daysInMonth} días
               </span>
             </div>
             <button
               type="button"
               onClick={() => setViewDate(new Date(year, month + 1, 1))}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-obsidian text-gray-300 transition hover:border-accent/50 hover:bg-accent/10 hover:text-accent"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#242427] bg-[#0B0B0C] text-gray-300 transition hover:border-[#A3E635]/50 hover:bg-[#A3E635]/10 hover:text-[#A3E635]"
             >
               <ChevronRight size={20} />
             </button>
@@ -194,7 +194,7 @@ export function DatePicker({ value, onChange, placeholder = 'Selecciona una fech
                 key={wd}
                 className={cn(
                   'py-2 text-center text-[10px] font-black uppercase tracking-wider',
-                  i === 0 || i === 6 ? 'text-accent/70' : 'text-gray-500'
+                  i === 0 || i === 6 ? 'text-[#A3E635]/70' : 'text-gray-500'
                 )}
               >
                 {wd}
@@ -216,19 +216,19 @@ export function DatePicker({ value, onChange, placeholder = 'Selecciona una fech
                   type="button"
                   onClick={() => selectDay(day)}
                   className={cn(
-                    'relative flex aspect-square items-center justify-center rounded-xl text-sm font-bold transition-all duration-150',
+                    'relative flex aspect-square items-center justify-center rounded-lg text-sm font-bold transition-all duration-150',
                     isSelected
-                      ? 'scale-105 bg-gradient-to-br from-accent to-accent-light text-black shadow-lg shadow-accent/50'
+                      ? 'scale-105 bg-[#A3E635] text-black shadow-lg shadow-[#A3E635]/40'
                       : isToday
-                        ? 'border-2 border-accent bg-accent/10 text-accent ring-2 ring-accent/20'
+                        ? 'border-2 border-[#A3E635] bg-[#A3E635]/10 text-[#A3E635]'
                         : isWeekend
-                          ? 'text-gray-400 hover:bg-accent/10 hover:text-accent'
-                          : 'text-gray-200 hover:bg-white/10 hover:text-white'
+                          ? 'text-gray-400 hover:bg-[#A3E635]/10 hover:text-[#A3E635]'
+                          : 'text-gray-200 hover:bg-[#242427] hover:text-white'
                   )}
                 >
                   {day}
                   {isToday && !isSelected && (
-                    <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent" />
+                    <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[#A3E635]" />
                   )}
                 </button>
               );
@@ -236,14 +236,14 @@ export function DatePicker({ value, onChange, placeholder = 'Selecciona una fech
           </div>
         </div>
 
-        <div className="flex gap-2 border-t border-white/[0.06] bg-obsidian/80 p-4">
+        <div className="flex gap-2 border-t border-[#1F1F22] bg-[#0B0B0C] p-4">
           <button
             type="button"
             onClick={() => {
               onChange(todayISO);
               setOpen(false);
             }}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent to-accent-light py-3 text-xs font-black uppercase tracking-wider text-black shadow-md shadow-accent/30 transition hover:scale-[1.02]"
+            className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#A3E635] py-3 text-xs font-extrabold uppercase tracking-wider text-black shadow-md shadow-[#A3E635]/30 transition hover:bg-[#bef264] active:scale-95"
           >
             <Calendar size={14} />
             Hoy
@@ -254,7 +254,7 @@ export function DatePicker({ value, onChange, placeholder = 'Selecciona una fech
               onChange('');
               setOpen(false);
             }}
-            className="flex-1 rounded-xl border border-white/10 py-3 text-xs font-bold uppercase tracking-wider text-gray-400 transition hover:border-white/20 hover:text-white"
+            className="flex-1 rounded-lg bg-[#242427] py-3 text-xs font-bold uppercase tracking-wider text-gray-300 transition hover:bg-[#2c2c30] hover:text-white"
           >
             Limpiar
           </button>
@@ -273,16 +273,16 @@ export function DatePicker({ value, onChange, placeholder = 'Selecciona una fech
           if (!open) setTimeout(updatePosition, 0);
         }}
         className={cn(
-          'group flex w-full items-center gap-3 rounded-xl border px-4 py-3.5 text-left transition-all duration-200',
+          'group flex w-full items-center gap-3 rounded-lg border px-4 py-3.5 text-left transition-all duration-200',
           open
-            ? 'border-accent/60 bg-accent/5 ring-2 ring-accent/30'
-            : 'border-white/10 bg-obsidian hover:border-accent/40 hover:bg-elevated'
+            ? 'border-[#A3E635]/60 bg-[#A3E635]/5 ring-2 ring-[#A3E635]/20'
+            : 'border-[#242427] bg-[#0B0B0C] hover:border-[#A3E635]/40 hover:bg-[#1F1F22]'
         )}
       >
         <div
           className={cn(
             'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition',
-            open ? 'bg-accent text-black' : 'bg-accent/15 text-accent group-hover:bg-accent/25'
+            open ? 'bg-[#A3E635] text-black' : 'bg-[#A3E635]/10 text-[#A3E635] group-hover:bg-[#A3E635]/20'
           )}
         >
           <Calendar size={20} />
@@ -299,7 +299,7 @@ export function DatePicker({ value, onChange, placeholder = 'Selecciona una fech
           size={18}
           className={cn(
             'shrink-0 text-gray-500 transition-transform duration-200',
-            open && 'rotate-90 text-accent'
+            open && 'rotate-90 text-[#A3E635]'
           )}
         />
       </button>
@@ -325,7 +325,7 @@ export function WeekDayStrip({
   };
 
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-charcoal/80 p-2 backdrop-blur-sm">
+    <div className="rounded-xl border border-[#1F1F22] bg-[#161618] p-2">
       <p className="mb-2 px-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
         Semana de entrenamiento
       </p>
@@ -338,19 +338,21 @@ export function WeekDayStrip({
               type="button"
               onClick={() => handleSelect(day, i)}
               className={cn(
-                'group relative flex min-w-[92px] flex-col items-center rounded-2xl px-4 py-4 transition-all duration-300',
+                'group relative flex min-w-[92px] flex-col items-center rounded-xl px-4 py-4 transition-all duration-300',
                 active
-                  ? 'bg-gradient-to-b from-accent to-accent-light text-black shadow-lg shadow-accent/40 scale-[1.02]'
-                  : 'border border-white/[0.08] bg-obsidian text-muted hover:border-accent/40 hover:bg-elevated'
+                  ? 'bg-[#A3E635] text-black shadow-lg shadow-[#A3E635]/30 scale-[1.02]'
+                  : day.isToday
+                    ? 'border border-[#A3E635] bg-[#161618] text-[#A3E635]'
+                    : 'border border-[#242427] bg-[#161618] text-gray-400 hover:border-[#A3E635]/40 hover:bg-[#1F1F22]'
               )}
             >
               {day.isToday && !active && (
-                <span className="absolute -top-1 right-2 h-2 w-2 rounded-full bg-accent shadow-[0_0_8px_#a4ff00]" />
+                <span className="absolute -top-1 right-2 h-2 w-2 rounded-full bg-[#A3E635] shadow-[0_0_8px_#A3E635]" />
               )}
               <span
                 className={cn(
                   'text-[10px] font-black uppercase tracking-widest',
-                  active ? 'text-black/70' : 'text-gray-500 group-hover:text-accent'
+                  active ? 'text-black/70' : 'text-gray-500 group-hover:text-[#A3E635]'
                 )}
               >
                 {day.label}
@@ -367,7 +369,7 @@ export function WeekDayStrip({
                 <span
                   className={cn(
                     'mt-2 rounded-full px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider',
-                    active ? 'bg-black/20 text-black' : 'bg-accent/20 text-accent'
+                    active ? 'bg-black/20 text-black' : 'bg-[#A3E635]/15 text-[#A3E635]'
                   )}
                 >
                   Hoy
