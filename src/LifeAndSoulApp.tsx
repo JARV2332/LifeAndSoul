@@ -400,19 +400,49 @@ export default function LifeAndSoulApp() {
     setLandingSub('hero');
   };
 
-  const handleSendChat = () => {
+  const [chatLoading, setChatLoading] = useState(false);
+
+  const handleSendChat = async () => {
     const trimmed = chatInput.trim();
-    if (!trimmed) return;
-    setChatMessages((prev) => [
-      ...prev,
-      { id: Date.now(), sender: 'user', text: trimmed },
-      {
-        id: Date.now() + 1,
-        sender: 'coach',
-        text: '¡Recibido! Analizo tu consulta y te doy la mejor alternativa para tu sesión de hoy. Recuerda: la técnica correcta siempre gana al ego. ¡Sigue fuerte! 💪🔥',
-      },
-    ]);
+    if (!trimmed || chatLoading) return;
+
+    const userMsg: ChatMessage = { id: Date.now(), sender: 'user', text: trimmed };
+    setChatMessages((prev) => [...prev, userMsg]);
     setChatInput('');
+    setChatLoading(true);
+
+    const history = [...chatMessages, userMsg].map((m) => ({
+      role: m.sender === 'user' ? 'user' : 'assistant',
+      content: m.text,
+    }));
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setChatMessages((prev) => [
+          ...prev,
+          { id: Date.now() + 1, sender: 'coach', text: data.reply },
+        ]);
+      } else {
+        setChatMessages((prev) => [
+          ...prev,
+          { id: Date.now() + 1, sender: 'coach', text: '⚠️ Error al conectar con el coach. Intenta de nuevo.' },
+        ]);
+      }
+    } catch {
+      setChatMessages((prev) => [
+        ...prev,
+        { id: Date.now() + 1, sender: 'coach', text: '⚠️ Sin conexión. Revisa tu red e intenta de nuevo.' },
+      ]);
+    } finally {
+      setChatLoading(false);
+    }
   };
 
   const strengthDoneCount = Object.values(strengthChecks).filter(Boolean).length;
@@ -886,6 +916,20 @@ export default function LifeAndSoulApp() {
               </div>
             </div>
           ))}
+          {chatLoading && (
+            <div className="flex justify-start">
+              <div className="mr-2 flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#A3E635]/30 bg-[#0B0B0C]">
+                <Logo className="h-7 w-7 max-w-none" />
+              </div>
+              <div className="rounded-xl bg-[#0B0B0C] border-l-4 border-[#A3E635] px-4 py-3 text-sm text-gray-400">
+                <span className="inline-flex gap-1">
+                  <span className="animate-pulse">●</span>
+                  <span className="animate-pulse [animation-delay:0.2s]">●</span>
+                  <span className="animate-pulse [animation-delay:0.4s]">●</span>
+                </span>
+              </div>
+            </div>
+          )}
           <div ref={chatEndRef} />
         </div>
 
