@@ -893,23 +893,23 @@ export default function LifeAndSoulApp() {
         </div>
 
         {/* Messages — scrollable */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {chatMessages.map((msg) => (
             <div
               key={msg.id}
               className={cn('flex', msg.sender === 'user' ? 'justify-end' : 'justify-start')}
             >
               {msg.sender === 'coach' && (
-                <div className="mr-2 flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#A3E635]/30 bg-[#0B0B0C]">
-                  <Logo className="h-7 w-7 max-w-none" />
+                <div className="mr-2 mt-1 flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#A3E635]/30 bg-[#0B0B0C]">
+                  <Logo className="h-6 w-6 max-w-none" />
                 </div>
               )}
               <div
                 className={cn(
-                  'max-w-[75%] rounded-xl px-4 py-3 text-sm leading-relaxed',
+                  'max-w-[80%] rounded-xl px-4 py-3 text-[13px] leading-relaxed whitespace-pre-line break-words',
                   msg.sender === 'user'
-                    ? 'bg-[#242427] text-white'
-                    : 'bg-[#0B0B0C] border-l-4 border-[#A3E635] text-white'
+                    ? 'bg-[#242427] text-white rounded-br-sm'
+                    : 'bg-[#0B0B0C] border-l-4 border-[#A3E635] text-gray-100 rounded-bl-sm'
                 )}
               >
                 {msg.text}
