@@ -13,15 +13,10 @@ import {
   Calendar,
   Clock,
   Dumbbell,
-  Brain,
   HeartPulse,
   UtensilsCrossed,
   MessageCircle,
   LayoutDashboard,
-  Home,
-  CreditCard,
-  User,
-  Mail,
   Lock,
   Flame,
   Target,
@@ -38,6 +33,8 @@ import {
   Link,
 } from 'lucide-react';
 import { DatePicker, WeekDayStrip } from './components/DatePicker';
+import { MarketingShell } from './components/marketing/MarketingShell';
+import { MarketingLanding } from './components/marketing/MarketingLanding';
 import {
   type Discipline,
   type WorkoutProgram,
@@ -400,6 +397,22 @@ export default function LifeAndSoulApp() {
     setLandingSub('hero');
   };
 
+  const isMarketingView = view === 'landing' || view === 'about';
+
+  const startFreeTrial = () => {
+    setLandingSub('checkout');
+    setView('landing');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const enterApp = () => {
+    if (isSubscribed) {
+      setView('dashboard');
+    } else {
+      startFreeTrial();
+    }
+  };
+
   const [chatLoading, setChatLoading] = useState(false);
 
   const handleSendChat = async () => {
@@ -450,14 +463,12 @@ export default function LifeAndSoulApp() {
     ((warmupDone ? 1 : 0) + strengthDoneCount + (timerSeconds > 0 ? 1 : 0)) / 7 * 100
   );
 
-  const navItems: { id: View; label: string; icon: ReactNode; locked?: boolean }[] = [
-    { id: 'landing', label: 'Inicio & Checkout', icon: <Home size={18} /> },
-    { id: 'about', label: 'Conócenos', icon: <User size={18} /> },
-    { id: 'professor', label: 'Panel Profe', icon: <ClipboardList size={18} /> },
+  const appNavItems: { id: View; label: string; icon: ReactNode; locked?: boolean; admin?: boolean }[] = [
     { id: 'dashboard', label: 'Panel Atleta', icon: <LayoutDashboard size={18} />, locked: !isSubscribed },
     { id: 'coach', label: 'Coach Ángel', icon: <MessageCircle size={18} />, locked: !isSubscribed },
     { id: 'kitchen', label: 'Cocina Digital', icon: <UtensilsCrossed size={18} />, locked: !isSubscribed },
     { id: 'physio', label: 'Hub Fisioterapia', icon: <HeartPulse size={18} />, locked: !isSubscribed },
+    { id: 'professor', label: 'Admin · Panel Profe', icon: <ClipboardList size={18} />, admin: true },
   ];
 
   const handlePublishProgram = () => {
@@ -506,36 +517,11 @@ export default function LifeAndSoulApp() {
     setVideoModalOpen(true);
   };
 
-  const featureCards = [
-    {
-      icon: <Calendar size={28} className="text-[#A3E635]" />,
-      title: 'Programación Diaria',
-      desc: 'WODs estructurados por disciplina con progresión inteligente cada día.',
-    },
-    {
-      icon: <Video size={28} className="text-[#A3E635]" />,
-      title: 'Librería de Técnica',
-      desc: 'Videos y cues para perfeccionar cada movimiento de tu entrenamiento.',
-    },
-    {
-      icon: <Brain size={28} className="text-[#A3E635]" />,
-      title: 'Coach IA 24/7',
-      desc: 'Coach Ángel responde dudas en tiempo real, día y noche.',
-    },
-    {
-      icon: <HeartPulse size={28} className="text-[#A3E635]" />,
-      title: 'Fisioterapia Integrada',
-      desc: 'Prevención, recuperación y citas con especialistas en un solo lugar.',
-    },
-  ];
-
   const [carouselIndex, setCarouselIndex] = useState(0);
   const TEAM_PHOTOS = Array.from({ length: 13 }, (_, i) => `/team/angel-${i + 1}.png`);
 
   const nextSlide = () => setCarouselIndex((prev) => (prev + 1) % TEAM_PHOTOS.length);
   const prevSlide = () => setCarouselIndex((prev) => (prev - 1 + TEAM_PHOTOS.length) % TEAM_PHOTOS.length);
-
-  /* ─── VIEWS ─── */
 
   const AboutView = () => (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-10">
@@ -732,117 +718,11 @@ export default function LifeAndSoulApp() {
       <div className="text-center bg-[#161618] border border-zinc-800 rounded-xl p-8">
         <h2 className="font-black tracking-tighter uppercase text-white text-xl mb-2">¿Listo para transformar tu vida?</h2>
         <p className="text-sm text-gray-400 mb-6">Únete al equipo Life & Soul y entrena con los mejores</p>
-        <button type="button" onClick={() => { setView('landing'); setLandingSub('checkout'); }} className="ls-btn-primary">
+        <button type="button" onClick={() => { startFreeTrial(); }} className="ls-btn-primary">
           UNIRME AL TEAM
           <ChevronRight size={18} />
         </button>
       </div>
-    </div>
-  );
-
-  const LandingView = () => (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {landingSub === 'hero' ? (
-        <>
-          <section className="relative overflow-hidden rounded-xl border border-zinc-800 bg-[#161618] p-8 md:p-14">
-            <div className="ls-glow -right-32 -top-32 h-96 w-96 bg-[#A3E635]/10" />
-            <div className="ls-glow -bottom-20 -left-20 h-64 w-64 bg-[#A3E635]/5" />
-            <div className="relative z-10 flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-16">
-              <Logo className="h-48 w-full max-w-[300px] shrink-0 sm:h-56 sm:max-w-[360px] lg:h-64 lg:max-w-[400px]" />
-              <div className="max-w-2xl text-center lg:text-left">
-                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#A3E635]/40 bg-[#A3E635]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#A3E635]">
-                  <Flame size={14} /> Life & Soul · Functional Training
-                </div>
-                <h1 className="font-black tracking-tighter uppercase text-white text-3xl leading-[1.1] md:text-5xl">
-                  ENTRENA COMO UN ATLETA DE ÉLITE DESDE CUALQUIER LUGAR
-                </h1>
-                <p className="mt-4 text-base leading-relaxed text-gray-400 md:text-lg">
-                  Seguimiento diario de WODs, coaching con IA, disciplinas personalizadas y
-                  fisioterapia integrada. Tu rendimiento, elevado al máximo nivel.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setLandingSub('checkout')}
-                  className="ls-btn-primary mt-8"
-                >
-                  UNIRME AL TEAM AQUÍ
-                  <ChevronRight size={20} />
-                </button>
-              </div>
-            </div>
-          </section>
-
-          <section className="mt-10">
-            <h2 className="font-black tracking-tighter uppercase text-white text-lg mb-5">
-              Todo lo que necesitas para rendir al máximo
-            </h2>
-            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-              {featureCards.map((feat) => (
-                <div key={feat.title} className="bg-[#161618] border border-zinc-800 rounded-xl p-6 hover:border-[#333] transition-all duration-300">
-                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-[#A3E635]/10">
-                    {feat.icon}
-                  </div>
-                  <h3 className="font-bold text-white text-sm">{feat.title}</h3>
-                  <p className="mt-1.5 text-xs leading-relaxed text-gray-400">{feat.desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        </>
-      ) : (
-        <section className="mx-auto max-w-md">
-          <button
-            type="button"
-            onClick={() => setLandingSub('hero')}
-            className="mb-6 flex items-center gap-1 text-sm text-gray-400 transition hover:text-white"
-          >
-            <ChevronRight size={14} className="rotate-180" />
-            Volver al inicio
-          </button>
-          <div className="bg-[#161618] border border-zinc-800 rounded-xl p-8">
-            <div className="mb-6 flex justify-center">
-              <Logo className="h-36 w-full max-w-[240px]" />
-            </div>
-            <div className="mb-6 flex items-start justify-between">
-              <div>
-                <h2 className="text-lg font-black uppercase tracking-tighter text-white">Completa tu inscripción</h2>
-                <p className="mt-1 text-sm text-gray-400">Acceso inmediato al panel de atleta</p>
-              </div>
-              <div className="flex items-center gap-1.5 rounded-lg bg-[#0B0B0C] px-3 py-1.5 text-xs font-medium text-gray-400">
-                <Lock size={12} className="text-[#A3E635]" />
-                Stripe
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <label className="ls-label"><User size={12} /> Nombre</label>
-                <input type="text" value={checkoutName} onChange={(e) => setCheckoutName(e.target.value)} placeholder="Tu nombre completo" className="ls-input" />
-              </div>
-              <div>
-                <label className="ls-label"><Mail size={12} /> Email</label>
-                <input type="email" value={checkoutEmail} onChange={(e) => setCheckoutEmail(e.target.value)} placeholder="tu@email.com" className="ls-input" />
-              </div>
-              <div>
-                <label className="ls-label"><CreditCard size={12} /> Datos de tarjeta</label>
-                <input type="text" value={checkoutCard} onChange={(e) => setCheckoutCard(e.target.value)} placeholder="4242 4242 4242 4242" maxLength={19} className="ls-input" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="ls-label">MM/AA</label>
-                  <input type="text" value={checkoutExpiry} onChange={(e) => setCheckoutExpiry(e.target.value)} placeholder="12/28" maxLength={5} className="ls-input" />
-                </div>
-                <div>
-                  <label className="ls-label">CVC</label>
-                  <input type="text" value={checkoutCvc} onChange={(e) => setCheckoutCvc(e.target.value)} placeholder="123" maxLength={4} className="ls-input" />
-                </div>
-              </div>
-              <button type="button" onClick={handleSubscribe} className="ls-btn-primary mt-2 w-full">
-                PAGAR E INICIAR ENTRENAMIENTO
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
     </div>
   );
 
@@ -1490,32 +1370,64 @@ export default function LifeAndSoulApp() {
     </div>
   );
 
-  const renderView = () => {
-    if (!isSubscribed && view !== 'landing' && view !== 'about' && view !== 'professor') {
+  const renderAppView = () => {
+    if (!isSubscribed && view !== 'professor') {
       return (
-        <div className="flex flex-col items-center justify-center py-24 text-center">
+        <div className="flex flex-col items-center justify-center py-24 text-center px-4">
           <Lock className="mb-4 text-gray-600" size={48} />
-          <p className="text-gray-400">Completa el checkout para acceder a esta sección.</p>
-          <button type="button" onClick={() => setView('landing')} className="mt-4 font-bold text-[#A3E635] hover:underline">
-            Ir al checkout →
+          <p className="text-gray-400">Activa tu membresía para acceder al Box Online.</p>
+          <button type="button" onClick={startFreeTrial} className="mt-4 font-bold text-[#A3E635] hover:underline">
+            Empezar gratis →
           </button>
         </div>
       );
     }
     switch (view) {
-      case 'landing': return LandingView();
-      case 'about': return AboutView();
       case 'dashboard': return DashboardView();
       case 'coach': return CoachView();
       case 'kitchen': return KitchenView();
       case 'physio': return PhysioView();
       case 'professor': return ProfessorView();
-      default: return LandingView();
+      default: return DashboardView();
     }
   };
 
-  /* ─── SHELL ─── */
+  /* ─── MARKETING SITE (HWPO-style) ─── */
+  if (isMarketingView) {
+    return (
+      <MarketingShell
+        activeView={view === 'about' ? 'about' : 'landing'}
+        onNavigate={(v) => setView(v)}
+        onEnterApp={enterApp}
+        onEnterAdmin={() => setView('professor')}
+        onStartFree={startFreeTrial}
+      >
+        {view === 'landing' ? (
+          <MarketingLanding
+            landingSub={landingSub}
+            setLandingSub={setLandingSub}
+            onStartFree={startFreeTrial}
+            onMeetCoach={() => setView('about')}
+            checkoutName={checkoutName}
+            setCheckoutName={setCheckoutName}
+            checkoutEmail={checkoutEmail}
+            setCheckoutEmail={setCheckoutEmail}
+            checkoutCard={checkoutCard}
+            setCheckoutCard={setCheckoutCard}
+            checkoutExpiry={checkoutExpiry}
+            setCheckoutExpiry={setCheckoutExpiry}
+            checkoutCvc={checkoutCvc}
+            setCheckoutCvc={setCheckoutCvc}
+            onSubscribe={handleSubscribe}
+          />
+        ) : (
+          AboutView()
+        )}
+      </MarketingShell>
+    );
+  }
 
+  /* ─── APP / LMS SHELL ─── */
   return (
     <div className="flex min-h-screen bg-[#0B0B0C] font-sans">
       {mobileSidebar && (
@@ -1532,9 +1444,12 @@ export default function LifeAndSoulApp() {
         <div className="flex h-full flex-col">
           <div className="border-b border-zinc-800 px-3 py-4">
             <Logo className={cn('mx-auto', sidebarOpen || mobileSidebar ? 'h-32 w-full max-w-[200px]' : 'h-12 w-12 max-w-[48px]')} />
+            {(sidebarOpen || mobileSidebar) && (
+              <p className="mt-2 text-center text-[9px] font-black uppercase tracking-widest text-[#A3E635]">Box Online</p>
+            )}
           </div>
           <nav className="flex-1 space-y-1 px-2 py-3">
-            {navItems.map((item) => (
+            {appNavItems.map((item) => (
               <button
                 key={item.id}
                 type="button"
@@ -1546,7 +1461,9 @@ export default function LifeAndSoulApp() {
                     ? 'bg-[#A3E635] text-black font-extrabold'
                     : item.locked
                       ? 'cursor-not-allowed text-gray-600 opacity-50'
-                      : 'text-gray-400 hover:bg-[#242427] hover:text-white'
+                      : item.admin
+                        ? 'text-amber-400/90 hover:bg-amber-500/10 hover:text-amber-300'
+                        : 'text-gray-400 hover:bg-[#242427] hover:text-white'
                 )}
               >
                 {item.icon}
@@ -1562,6 +1479,13 @@ export default function LifeAndSoulApp() {
           )}
           <button
             type="button"
+            onClick={() => setView('landing')}
+            className="mx-2 mb-2 rounded-lg border border-zinc-800 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-500 transition hover:border-[#A3E635]/40 hover:text-white"
+          >
+            {sidebarOpen || mobileSidebar ? '← Volver al sitio' : '←'}
+          </button>
+          <button
+            type="button"
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="hidden border-t border-zinc-800 p-2.5 text-[10px] text-gray-500 transition hover:text-white lg:block"
           >
@@ -1575,8 +1499,11 @@ export default function LifeAndSoulApp() {
           <button type="button" onClick={() => setMobileSidebar(true)} className="rounded-lg p-2 text-gray-400 hover:bg-[#242427] hover:text-white lg:hidden">
             <Menu size={20} />
           </button>
-          <div className="hidden lg:flex">
-            <Logo className="h-12 w-full max-w-[160px]" />
+          <div className="hidden lg:flex items-center gap-3">
+            <Logo className="h-10 w-full max-w-[140px]" />
+            <span className="rounded-full bg-[#A3E635]/10 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-[#A3E635]">
+              LMS · Box Online
+            </span>
           </div>
           {isSubscribed && (
             <div className="hidden items-center gap-1.5 rounded-full bg-[#A3E635]/10 px-3 py-1 text-[10px] font-bold text-[#A3E635] sm:flex">
@@ -1586,7 +1513,7 @@ export default function LifeAndSoulApp() {
         </header>
 
         <main className="flex-1 overflow-y-auto bg-[#0B0B0C]">
-          {renderView()}
+          {renderAppView()}
         </main>
       </div>
 
